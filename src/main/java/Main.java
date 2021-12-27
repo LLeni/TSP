@@ -24,11 +24,13 @@ public class Main {
             //TODO: проверка на различие координат у всех городов
         }
 
-//        BruteForceAlgorithm algorithm = new BruteForceAlgorithm(cities);
-//        algorithm.applySimulatedAnnealing();
-
          BranchAndBoundAlgorithm branchAndBoundAlgorithm = new BranchAndBoundAlgorithm();
-         branchAndBoundAlgorithm.calculateMinLength(cities);
+
+         //Для теста
+         double C[][] = {{Double.MAX_VALUE,20,18,12,8}, {5,Double.MAX_VALUE,14,7,11}, {12,18,Double.MAX_VALUE,6,11}, {11,17,11,Double.MAX_VALUE,12}, {5,5,5,5,Double.MAX_VALUE}};
+
+
+        System.out.println(   branchAndBoundAlgorithm.calculateMinLength(C));
 
          //branchAndBoundAlgorithm.reduceMatrix(branchAndBoundAlgorithm.createMatrixLengths(cities),1,1);
 
