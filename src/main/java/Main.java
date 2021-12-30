@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -24,52 +21,15 @@ public class Main {
             //TODO: проверка на различие координат у всех городов
         }
 
-         BranchAndBoundAlgorithm branchAndBoundAlgorithm = new BranchAndBoundAlgorithm();
+         Solver solver = new Solver();
 
          //Для теста
-         double C[][] = {{Double.MAX_VALUE,20,18,12,8}, {5,Double.MAX_VALUE,14,7,11}, {12,18,Double.MAX_VALUE,6,11}, {11,17,11,Double.MAX_VALUE,12}, {5,5,5,5,Double.MAX_VALUE}};
+         //double C[][] = {{Double.MAX_VALUE,20,18,12,8}, {5,Double.MAX_VALUE,14,7,11}, {12,18,Double.MAX_VALUE,6,11}, {11,17,11,Double.MAX_VALUE,12}, {5,5,5,5,Double.MAX_VALUE}};
+        // double C[][] = {{Double.MAX_VALUE, 55, 39, 28}, {23, Double.MAX_VALUE, 31, 37}, {53, 49, Double.MAX_VALUE, 44}, {45, 65, 71, Double.MAX_VALUE}};
+            double C[][] = {{Double.MAX_VALUE,90,80,40,100}, {60,Double.MAX_VALUE,40,50,70}, {50,30,Double.MAX_VALUE,60,20}, {10,70,20,Double.MAX_VALUE,50}, {20,40,50,20,Double.MAX_VALUE}};
 
+        System.out.println(solver.calculateMinLength(C));
 
-        System.out.println(   branchAndBoundAlgorithm.calculateMinLength(C));
-
-         //branchAndBoundAlgorithm.reduceMatrix(branchAndBoundAlgorithm.createMatrixLengths(cities),1,1);
-
-//        double edges [][] = new double[cities.size()][cities.size()];
-//        ArrayList<Double> edgesList = new ArrayList<Double>();
-//        HashMap<City, Double> citiesWithMinEdges = new HashMap<City, Double>();
-//        double edge;
-//        for (int i = 0; i < cities.size(); i++) {
-//            for (int j = 0; j < cities.size(); j++) {
-//                edge = Math.sqrt(Math.pow(cities.get(i).getX() - cities.get(j).getX(), 2) + Math.pow(cities.get(i).getY() - cities.get(j).getY(), 2));
-//                edges[i][j] = edge;
-//
-//                if(i == j) continue;
-//                edgesList.add(edge);
-//                citiesWithMinEdges.put(cities.get(j), edge);
-//            }
-//        }
-//
-//        Collections.sort(edgesList);
-//        cities.
-
-//        for (double e :
-//                edgesList) {
-//            System.out.println(e + " ");
-//        }
-//
-//        for (int i = 0; i < edges.length ; i++) {
-//            for (int j = 0; j < edges[i].length; j++) {
-//                if(i == j) continue;
-//
-//            }
-//        }
-//
-//        for (int i = 0; i < cities.size(); i++) {
-//            for (int j = 0; j < cities.size(); j++) {
-//                System.out.printf("%10.3f",edges[i][j]);
-//            }
-//            System.out.println();
-//        }
 
     }
 }
