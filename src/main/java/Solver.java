@@ -1,25 +1,16 @@
 import java.util.ArrayList;
 
 public class Solver {
-
-    //TODO: СРОЧНО НУЖЕН РЕФАКТОРИНГ :D
-
     private ArrayList<Solution> solutions; //ноды решений в дереве
     private int idCurrentSolution;
     private Solution currentSolution;
 
-    Solver(){
-
-    }
-
-    public double calculateMinLength(City cities[]){
+    public double calculateMinLength(ArrayList<City> cities){
         return calculateMinLength(MatrixLengths.createC(cities));
     }
 
     //Основной связующий метод
-    //TODO: Может назвать Solve
     public double calculateMinLength(double C[][]){
-
         currentSolution = new Solution(new MatrixLengths(C));
 
         double minsRow[] = calculateMinsRow(currentSolution.getMatrixLengths());
@@ -27,10 +18,10 @@ public class Solver {
         double minsColumn[] = calculateMinsColumn(currentSolution.getMatrixLengths());
         currentSolution.getMatrixLengths().setC(reduceColumns(currentSolution.getMatrixLengths(), minsColumn));
         currentSolution.setLowBorder(calculateLowBorder(currentSolution.getMatrixLengths(), minsRow, minsColumn));
-        idCurrentSolution = 0;
 
         solutions = new ArrayList<>();
         solutions.add(currentSolution);
+        idCurrentSolution = 0;
 
         while(currentSolution.getMatrixLengths().getC().length > 1){ //0?
 
@@ -64,16 +55,6 @@ public class Solver {
 
         return currentSolution.getLowBorder();
     }
-    private double calculateLowBorder(MatrixLengths matrixLengths, double minsRow[], double minsColumn[]){
-
-        double localLowBorder = 0;
-        double C[][] = matrixLengths.getC();
-        for (int i = 0; i < C.length; i++) {
-            localLowBorder += minsRow[i] + minsColumn[i];
-        }
-
-        return localLowBorder;
-    }
 
     //Нахождение минимальные значения в строках
     private double[] calculateMinsRow(MatrixLengths matrixLengths){
@@ -95,22 +76,11 @@ public class Solver {
     //Редукция строк
     private double[][] reduceRows(MatrixLengths matrixLengths, double minsRow[]){
         double C[][] = matrixLengths.getC();
+
         for (int i = 0; i < C.length; i++) {
             for (int j = 0; j < C.length; j++) {
                 if(i != j) //избегаем главную диагональ
                     C[i][j] -= minsRow[i];
-            }
-        }
-        return C;
-    }
-
-    //Редукция столбцов
-    private double[][] reduceColumns(MatrixLengths matrixLengths, double minsColumn[]){
-        double C[][] = matrixLengths.getC();
-        for (int i = 0; i < C.length; i++) {
-            for (int j = 0; j < C.length; j++) {
-                if(i != j) //избегаем главную диагональ
-                    C[i][j] -= minsColumn[j];
             }
         }
         return C;
@@ -121,6 +91,7 @@ public class Solver {
         double C[][] = matrixLengths.getC();
         double currentMin;
         double minsColumn[] = new double[C.length];
+
         for (int j = 0; j < minsColumn.length; j++) {
             currentMin = Double.MAX_VALUE;
             for (int i = 0; i < minsColumn.length; i++) {
@@ -130,15 +101,41 @@ public class Solver {
             minsColumn[j] = currentMin;
 
         }
+
         return minsColumn;
+    }
+
+    //Редукция столбцов
+    private double[][] reduceColumns(MatrixLengths matrixLengths, double minsColumn[]){
+        double C[][] = matrixLengths.getC();
+
+        for (int i = 0; i < C.length; i++) {
+            for (int j = 0; j < C.length; j++) {
+                if(i != j) //избегаем главную диагональ
+                    C[i][j] -= minsColumn[j];
+            }
+        }
+
+        return C;
+    }
+
+    private double calculateLowBorder(MatrixLengths matrixLengths, double minsRow[], double minsColumn[]){
+        double localLowBorder = 0;
+        double C[][] = matrixLengths.getC();
+
+        for (int i = 0; i < C.length; i++) {
+            localLowBorder += minsRow[i] + minsColumn[i];
+        }
+
+        return localLowBorder;
     }
 
 
     //Делит текущее решение на два
     private void divideCurrentSolution(Solution solution){
 
-        double maxEvaluation[] = calculateMaxEvaluation(solution.getMatrixLengths());
-        solution.getMatrixLengths().changeCell((int)maxEvaluation[1], (int)maxEvaluation[2], Double.MAX_VALUE);
+        Evaluation evaluation = calculateMaxEvaluation(solution.getMatrixLengths());
+        solution.getMatrixLengths().changeCell(evaluation.getRowId(), evaluation.getColumnId(), MatrixLengths.INFINITY);
 
         Solution solutionInclude = null;
         Solution solutionExclude = null;
@@ -149,8 +146,8 @@ public class Solver {
             e.printStackTrace();
         }
         //Первая ветка, где мы включаем путь
-        solutionInclude.getMatrixLengths().excludePath((int)maxEvaluation[1], (int)maxEvaluation[2]); // TODO: может все же здесь в этом классе оставить логику этого метода
-        solutionInclude.getMatrixLengths().setC(reduceMatrix(solutionInclude, (int)maxEvaluation[1], (int)maxEvaluation[2]));
+        solutionInclude.getMatrixLengths().excludePath(evaluation.getRowId(), evaluation.getColumnId()); // TODO: может все же здесь в этом классе оставить логику этого метода
+        solutionInclude.getMatrixLengths().setC(reduceMatrix(solutionInclude, evaluation.getRowId(), evaluation.getColumnId()));
 
         double minsRow[] = calculateMinsRow(solutionInclude.getMatrixLengths());
         solutionInclude.getMatrixLengths().setC(reduceRows(solutionInclude.getMatrixLengths(), minsRow));
@@ -160,7 +157,7 @@ public class Solver {
 
 
         //Вторая ветка, где мы исключаем путь
-        solutionExclude.setLowBorder(solutionExclude.getLowBorder() + maxEvaluation[0]);
+        solutionExclude.setLowBorder(solutionExclude.getLowBorder() + evaluation.getValueEvaluation());
 
         solutionInclude.getMatrixLengths().showMatrix();
         solutionExclude.getMatrixLengths().showMatrix();
@@ -173,9 +170,8 @@ public class Solver {
 
 
     //Вычисление оценки нулевых клеток и одновременное нахождение среди них максимальной
-    private double[] calculateMaxEvaluation(MatrixLengths matrixLengths){
-        double maxEvaluation[] = new double[3];
-        maxEvaluation[0] = Double.MIN_VALUE;
+    private Evaluation calculateMaxEvaluation(MatrixLengths matrixLengths){
+        Evaluation evaluation = new Evaluation();
 
         double C[][] = matrixLengths.getC();
         //showMatrix(C);
@@ -184,7 +180,7 @@ public class Solver {
         for (int i = 0; i < C.length; i++) {
             for (int j = 0; j < C.length; j++) {
                 //Находим минимум там, где ноль
-                //Приходится снова искать минимумы (но иначе),  т.к происходила редукция строк и столбцов
+                //Приходится снова искать минимумы, но иначе
                 if(C[i][j] == 0) {
                     currentMinRow = Double.MAX_VALUE;
                     currentMinColumn = Double.MAX_VALUE;
@@ -198,26 +194,25 @@ public class Solver {
                             currentMinColumn = C[i][k];
                         }
                     }
-                    if(maxEvaluation[0] < (currentMinRow + currentMinColumn)){
+                    if(evaluation.getValueEvaluation() < (currentMinRow + currentMinColumn)){
                         System.out.println(i + " " + j + " " + (currentMinRow + currentMinColumn));
-                        maxEvaluation[0] = (currentMinRow + currentMinColumn);
-                        maxEvaluation[1] = i;
-                        maxEvaluation[2] = j;
+                        evaluation.setEvaluation(currentMinRow + currentMinColumn, i, j);
                     }
                 }
 
             }
         }
-        return maxEvaluation;
+        return evaluation;
     }
-
-
 
     private int chooseSolution(){
         double minLowBorder = Double.MAX_VALUE;
         int idBranch = -1;
+
+        System.out.println(solutions.size() + " g34214");
         for (int i = 0; i < solutions.size(); i++) {
             if(solutions.get(i).getLowBorder() < minLowBorder){
+                System.out.println(minLowBorder + " asdasda");
                 minLowBorder = solutions.get(i).getLowBorder();
                 idBranch = i;
             }
@@ -225,7 +220,6 @@ public class Solver {
         System.out.println("\nВыбралу ту, где minLowBorder = " + minLowBorder);
         return idBranch;
     }
-
 
     private double[][] reduceMatrix(Solution solution, int r, int c){
         double newC[][] = new double[solution.getMatrixLengths().getC().length-1][solution.getMatrixLengths().getC().length-1];
@@ -250,11 +244,6 @@ public class Solver {
                 newC[i - Boolean.compare(isRowSkipped, false)][j - Boolean.compare(isColumnSkipped, false)] = C[i][j];
             }
         }
-
-
-
         return newC;
     }
-
-
 }

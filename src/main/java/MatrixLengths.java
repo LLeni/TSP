@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class MatrixLengths implements Cloneable {
 
     private double C[][];
@@ -5,19 +7,7 @@ public class MatrixLengths implements Cloneable {
     private int columnIds[];
 
     //Максимальное значение Double будет отображать бессконечность в ячейке матрицы
-    private static final double INFINITY = Double.MAX_VALUE;
-
-    MatrixLengths(City cities[]){
-        this.C = createC(cities);
-
-        rowIds = new int[C.length];
-        columnIds = new int[C.length];
-
-        for (int i = 0; i < C.length; i++) {
-            rowIds[i] = i;
-            columnIds[i] = i;
-        }
-    }
+    public static final double INFINITY = Double.MAX_VALUE;
 
     MatrixLengths(double C[][]){
         this.C = C;
@@ -32,14 +22,14 @@ public class MatrixLengths implements Cloneable {
     }
 
     //Построение матрицы расстояний с исходными данными
-    public static double[][] createC(City cities[]){
-        double C[][] = new double[cities.length][cities.length];
-        for (int i = 0; i < cities.length; i++) {
-            for (int j = 0; j < cities.length; j++) {
+    public static double[][] createC(ArrayList<City> cities){
+        double C[][] = new double[cities.size()][cities.size()];
+        for (int i = 0; i < cities.size(); i++) {
+            for (int j = 0; j < cities.size(); j++) {
                 if(i == j){
                     C[i][j] = MatrixLengths.INFINITY;
                 } else{
-                    C[i][j] = Math.sqrt(Math.pow(cities[i].getX() - cities[j].getX(),2) + Math.pow(cities[i].getY() - cities[j].getY(),2));
+                    C[i][j] = Math.sqrt(Math.pow(cities.get(i).getX() - cities.get(j).getX(),2) + Math.pow(cities.get(i).getY() - cities.get(j).getY(),2));
                 }
             }
         }
@@ -79,7 +69,6 @@ public class MatrixLengths implements Cloneable {
             C[newRowId][newColumnId] = MatrixLengths.INFINITY;
         }
 
-
         boolean isRowSkipped = false ;
         int newRowIds[] = new int[rowIds.length - 1];
         for (int i = 0; i < rowIds.length; i++) {
@@ -100,14 +89,9 @@ public class MatrixLengths implements Cloneable {
                 isColumnSkipped = true;
                 continue;
             }
-
             newColumnIds[i - Boolean.compare(isColumnSkipped, false)] = columnIds[i];
         }
-
-
         columnIds = newColumnIds;
-
-
     }
 
     public void changeCell(int i, int j, double value){
