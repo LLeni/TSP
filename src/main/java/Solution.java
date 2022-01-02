@@ -8,13 +8,14 @@ public class Solution implements  Cloneable {
         this.matrixLengths = matrixLengths;
     }
 
-    //Надо подумать
-//    Solution(Solution solution){
-//        this.C = solution.getC();
-//        this.lowBorder = solution.getLowBorder();
-//    }
+    public void calculateLowBorder(){
+        double minsRow[] = matrixLengths.getMinsRow();
+        double minsColumn[] = matrixLengths.getMinsColumn();
 
-
+        for (int i = 0; i < matrixLengths.getC().length; i++) {
+            lowBorder += minsRow[i] + minsColumn[i];
+        }
+    }
     public Solution clone () throws CloneNotSupportedException
     {
         Solution solution = (Solution) super.clone();

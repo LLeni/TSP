@@ -6,11 +6,13 @@ import java.util.Scanner;
 
 public class Reader {
     private Scanner sc;
+    private ClassLoader cl;
 
     private Reader(){
+        cl = this.getClass().getClassLoader();
     }
 
-    public ArrayList<City> readByKeabord() {
+    public City[] readByKeabord() {
         sc = new Scanner(System.in);
         System.out.print("Введите количество городов: ");
         int numberCities = sc.nextInt();
@@ -23,40 +25,35 @@ public class Reader {
             upcomingX = sc.nextInt();
             upcomingY = sc.nextInt();
 
-            cities[i] = new City(upcomingX, upcomingY);;
+            cities[i] = new City(upcomingX, upcomingY);
             //TODO: проверка на различие координат у всех городов
         }
         sc.close();
-        return new ArrayList<>(Arrays.asList(cities));
+        return cities;
     }
 
-    public ArrayList<City> readFromFile(String path){
+    public City[] readFromFile(String path){
         ArrayList<City> cities = new ArrayList<>();
-        City city;
         int upcomingX, upcomingY;
-        try {
-            sc = new Scanner(new File(path));
+            sc = new Scanner(cl.getResourceAsStream(path));
             while(sc.hasNextLine()){
                 if(sc.hasNextInt()){
                     upcomingX = sc.nextInt();
                 } else {
-                    return null;
+                   break;
                 }
 
                 if(sc.hasNextInt()){
                     upcomingY = sc.nextInt();
                 } else {
-                    return null;
+                    break;
                 }
 
                 cities.add(new City(upcomingX, upcomingY));
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
         sc.close();
-        return  cities;
+        return (City[])cities.toArray();
     }
     public  static Reader getInstance(){
         return new Reader();
