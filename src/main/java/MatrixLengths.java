@@ -146,7 +146,6 @@ public class MatrixLengths implements Cloneable {
      * @param c столбец
      */
     private void excludePath(int r, int c){
-        System.out.println(r +  "  " + c);
         int nameCityRow = rowIds[r];
         int nameCityColumn = columnIds[c];
 

@@ -15,7 +15,6 @@ public class TestMatrixLengths {
     @MethodSource("provideCities")
     public void testCreateC(int id, City cities[], double expected[][]){
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(500), () -> {
-            System.out.println(id + "  11");
             double C[][] = MatrixLengths.createC(cities);
             for (int i = 0; i < cities.length; i++) {
                 for (int j = 0; j < cities.length; j++) {
