@@ -1,15 +1,13 @@
-import java.util.ArrayList;
-
+//Контроллер матрицы длин
 public class MatrixLengths implements Cloneable {
+    //Максимальное значение Double будет отображать бессконечность в ячейке матрицы
+    public static final double INFINITY = Double.MAX_VALUE;
 
     private double C[][];
     private int rowIds[];
     private int columnIds[];
 
     private double minsRow[], minsColumn[];
-
-    //Максимальное значение Double будет отображать бессконечность в ячейке матрицы
-    public static final double INFINITY = Double.MAX_VALUE;
 
     MatrixLengths(double C[][]){
         this.C = C;
@@ -38,20 +36,25 @@ public class MatrixLengths implements Cloneable {
         return C;
     }
 
+    /**
+     * Проводит редуцию линий: как строк, так и столбцов и промежуточные рассчеты в виде минимальных значений у каждого столбца и строки
+     */
     public void reduceLines(){
-        minsRow = calculateMinsRow();
+        calculateMinsRow();
         reduceRows(minsRow);
 
-        minsColumn = calculateMinsColumn();
+        calculateMinsColumn();
         reduceColumns(minsColumn);
     }
 
 
-    //Нахождение минимальных значений в строках
-    private double[] calculateMinsRow(){
-        double minsRow[] = new double[C.length];
-        double currentMin;
+    /**
+     * Расчитывает минимальные значения у каждой строки
+     */
+    private void calculateMinsRow(){
+        minsRow = new double[C.length];
 
+        double currentMin;
         for (int i = 0; i < minsRow.length; i++) {
             currentMin = Double.MAX_VALUE;
             for (int j = 0; j < minsRow.length; j++) {
@@ -60,10 +63,12 @@ public class MatrixLengths implements Cloneable {
             }
             minsRow[i] = currentMin;
         }
-        return minsRow;
     }
 
-    //Редукция строк
+    /**
+     * Проводит редукцию строк
+     * @param minsRow массив минимальных значений у каждой строки
+     */
     private void reduceRows(double minsRow[]){
         for (int i = 0; i < C.length; i++) {
             for (int j = 0; j < C.length; j++) {
@@ -73,11 +78,13 @@ public class MatrixLengths implements Cloneable {
         }
     }
 
-    //Нахождение минимальных значений в колонках
-    private double[] calculateMinsColumn(){
-        double currentMin;
-        double minsColumn[] = new double[C.length];
+    /**
+     * Расчитывает  минимальные значения у каждого столбца
+     */
+    private void calculateMinsColumn(){
+        minsColumn = new double[C.length];
 
+        double currentMin;
         for (int j = 0; j < minsColumn.length; j++) {
             currentMin = Double.MAX_VALUE;
             for (int i = 0; i < minsColumn.length; i++) {
@@ -85,13 +92,13 @@ public class MatrixLengths implements Cloneable {
                     currentMin = C[i][j];
             }
             minsColumn[j] = currentMin;
-
         }
-
-        return minsColumn;
     }
 
-    //Редукция столбцов
+    /**
+     * Проводит редукцию столбцов
+     * @param minsColumn массив минимальных значений у каждого столбца
+     */
     private void  reduceColumns(double minsColumn[]){
         for (int i = 0; i < C.length; i++) {
             for (int j = 0; j < C.length; j++) {
@@ -101,7 +108,11 @@ public class MatrixLengths implements Cloneable {
         }
     }
 
-    //Редукция матрицы расстояний
+    /**
+     * Проводит редукцию матрицы
+     * @param r
+     * @param c
+     */
     public void reduceMatrix(int r, int c){
         excludePath(r, c);
         double newC[][] = new double[C.length-1][C.length-1];
@@ -184,12 +195,20 @@ public class MatrixLengths implements Cloneable {
         columnIds = newColumnIds;
     }
 
-    //Изменить конкретную ячейку
-    public void changeCell(int i, int j, double value){
+    /**
+     * Меняет значение в конкретно заданной ячейке в матрице расстояний
+     * @param r строка
+     * @param c колонка
+     * @param value значение
+     */
+    public void changeCell(int r, int c, double value){
+        C[r][c] = value;
+    }
 
-    C[i][j] = value;
-        }
-    //Для удобства во время разработки кода
+
+    /**
+     * Позволяет вывести матрицу расстояний на консоль
+     */
     public void showMatrix(){
         System.out.print("Матрица: \n\n ");
 
@@ -206,6 +225,11 @@ public class MatrixLengths implements Cloneable {
         }
     }
 
+    /**
+     * Клонирует текущий экземпляр
+     * @return склонированный текущий экземпляр MatrixLengths
+     * @throws CloneNotSupportedException
+     */
     public MatrixLengths clone () throws CloneNotSupportedException
     {
         return (MatrixLengths) super.clone();

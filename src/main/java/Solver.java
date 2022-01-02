@@ -1,16 +1,26 @@
 import java.util.ArrayList;
 
+//Решатель
+//Расчитывает минимальный путь и проводит менеджмент решений
 public class Solver {
     private ArrayList<Solution> solutions; //ноды решений в дереве. Легче представлять в виде списка, т.к нас интересуют только листья
     private int idCurrentSolution;
     private Solution currentSolution;
 
-
+    /**
+     * Расчитывает минимальный путь проходящий через все города и с возратом в первоначальный город
+     * @param cities массив городов
+     * @return
+     */
     public double calculateMinLength(City cities[]){
         return calculateMinLength(MatrixLengths.createC(cities));
     }
 
-    //Основной связующий метод
+    /**
+     * Расчитывает минимальный путь проходящий через все города и с возратом в первоначальный город
+     * @param C матрица расстояний между городами
+     * @return
+     */
     public double calculateMinLength(double C[][]){
 
         if(C.length == 1){
@@ -28,52 +38,36 @@ public class Solver {
         currentSolution.getMatrixLengths().reduceLines();
         currentSolution.calculateLowBorder();
 
-        System.out.println(currentSolution.getLowBorder() + "  231231231");
         solutions = new ArrayList<>();
         solutions.add(currentSolution);
         idCurrentSolution = 0;
 
         while(currentSolution.getMatrixLengths().getC().length > 1){
-
-
-            System.out.println("\n__________________НАЧАЛО ЦИКЛА__________________\n");
-
-
-            System.out.println("МинГраница у всех веток:");
-            for (int i = 0; i < solutions.size(); i++) {
-                System.out.print(" " + solutions.get(i).getLowBorder());
-            }
             if(currentSolution.isEliminatePath()){
                 currentSolution.getMatrixLengths().reduceLines();
-                currentSolution.getMatrixLengths().showMatrix();
-
             }
-            divideCurrentSolution(currentSolution);
-
+            divideCurrentSolution();
             solutions.remove(idCurrentSolution); // Убираем текущую ветвь, т.к она ветвлилась
-
-            for (int i = 0; i < solutions.size(); i++) {
-                System.out.print(" " + solutions.get(i).getLowBorder());
-            }
             idCurrentSolution = chooseSolution();
             currentSolution = solutions.get(idCurrentSolution);
         }
-
         return currentSolution.getLowBorder();
     }
 
 
-    //Делит текущее решение на два
-    private void divideCurrentSolution(Solution solution){
+    /**
+     * Делит текущее решение на два
+     */
+    private void divideCurrentSolution(){
 
-        Evaluation evaluation = calculateMaxEvaluation(solution.getMatrixLengths());
-        solution.getMatrixLengths().changeCell(evaluation.getRowId(), evaluation.getColumnId(), MatrixLengths.INFINITY);
+        Evaluation evaluation = calculateMaxEvaluation(currentSolution.getMatrixLengths());
+        currentSolution.getMatrixLengths().changeCell(evaluation.getRowId(), evaluation.getColumnId(), MatrixLengths.INFINITY);
 
         Solution solutionInclude = null;
         Solution solutionExclude = null;
         try {
-            solutionInclude = solution.clone();
-            solutionExclude = solution.clone();
+            solutionInclude = currentSolution.clone();
+            solutionExclude = currentSolution.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -101,7 +95,6 @@ public class Solver {
         Evaluation evaluation = new Evaluation();
 
         double C[][] = matrixLengths.getC();
-        //showMatrix(C);
         double currentMinRow;
         double currentMinColumn;
         for (int i = 0; i < C.length; i++) {
@@ -122,7 +115,6 @@ public class Solver {
                         }
                     }
                     if(evaluation.getValueEvaluation() < (currentMinRow + currentMinColumn)){
-                        System.out.println(i + " " + j + " " + (currentMinRow + currentMinColumn));
                         evaluation.setEvaluation(currentMinRow + currentMinColumn, i, j);
                     }
                 }
@@ -132,21 +124,20 @@ public class Solver {
         return evaluation;
     }
 
+    /**
+     * Выбрать релевантное решение с минимальной нижней границей
+     * @return идентификатор решения
+     */
     private int chooseSolution(){
         double minLowBorder = Double.MAX_VALUE;
-        int idBranch = -1;
+        int idSolution = -1;
 
-        System.out.println(solutions.size() + " g34214");
         for (int i = 0; i < solutions.size(); i++) {
             if(solutions.get(i).getLowBorder() < minLowBorder){
-                System.out.println(minLowBorder + " asdasda");
                 minLowBorder = solutions.get(i).getLowBorder();
-                idBranch = i;
+                idSolution = i;
             }
         }
-        System.out.println("\nВыбралу ту, где minLowBorder = " + minLowBorder);
-        return idBranch;
+        return idSolution;
     }
-
-
 }

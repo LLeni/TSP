@@ -1,4 +1,5 @@
-public class Solution implements  Cloneable {
+//Соотносится к одному конкретному решению
+public class Solution implements Cloneable {
 
     private MatrixLengths matrixLengths;
     private double lowBorder;
@@ -8,6 +9,9 @@ public class Solution implements  Cloneable {
         this.matrixLengths = matrixLengths;
     }
 
+    /**
+     * Расчитывает нижнюю границу
+     */
     public void calculateLowBorder(){
         double minsRow[] = matrixLengths.getMinsRow();
         double minsColumn[] = matrixLengths.getMinsColumn();
@@ -16,6 +20,12 @@ public class Solution implements  Cloneable {
             lowBorder += minsRow[i] + minsColumn[i];
         }
     }
+
+    /**
+     * Клонирует текущий экземпляр
+     * @return склонированный текущий экземпляр MatrixLengths
+     * @throws CloneNotSupportedException
+     */
     public Solution clone () throws CloneNotSupportedException
     {
         Solution solution = (Solution) super.clone();
