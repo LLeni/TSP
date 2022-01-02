@@ -5,7 +5,6 @@ public class Evaluation {
     private int rowId;
     private int columnId;
 
-
     Evaluation(){
         //Значение по умолчанию подразумевает под собой не найденную оценку
         valueEvaluation = Double.MIN_VALUE;
@@ -30,7 +29,6 @@ public class Evaluation {
     public int getRowId() {
         return rowId;
     }
-
 
     public int getColumnId() {
         return columnId;

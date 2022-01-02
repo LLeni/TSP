@@ -196,6 +196,44 @@ public class MatrixLengths implements Cloneable {
     }
 
     /**
+     * Расчитывает оценки нулевых клеток и одновременное нахождение среди них максимальной
+     *
+     * @return максимальную оценку
+     */
+
+     public Evaluation calculateMaxEvaluation(){
+        Evaluation evaluation = new Evaluation();
+
+        double currentMinRow;
+        double currentMinColumn;
+        for (int i = 0; i < C.length; i++) {
+            for (int j = 0; j < C.length; j++) {
+                //Находим минимум там, где ноль
+                //Приходится снова искать минимумы, но иначе
+                if(C[i][j] == 0) {
+                    currentMinRow = Double.MAX_VALUE;
+                    currentMinColumn = Double.MAX_VALUE;
+                    for (int k = 0; k < C.length; k++) {
+                        if (currentMinRow > C[k][j] && k != i) {
+                            currentMinRow = C[k][j];
+                        }
+                    }
+                    for (int k = 0; k < C.length; k++) {
+                        if (currentMinColumn > C[i][k] && k != j) {
+                            currentMinColumn = C[i][k];
+                        }
+                    }
+                    if(evaluation.getValueEvaluation() < (currentMinRow + currentMinColumn)){
+                        evaluation.setEvaluation(currentMinRow + currentMinColumn, i, j);
+                    }
+                }
+
+            }
+        }
+        return evaluation;
+    }
+
+    /**
      * Меняет значение в конкретно заданной ячейке в матрице расстояний
      * @param r строка
      * @param c колонка
