@@ -16,18 +16,42 @@ public class Reader {
      *
      * @return массив городов
      */
-    public City[] readByKeabord() {
+    public City[] readByKeyboard() {
         sc = new Scanner(System.in);
 
-        System.out.print("Введите количество городов: ");
-        int numberCities = sc.nextInt();
-        City cities[] = new City[numberCities];
+        int numberCities;
+        do {
+            System.out.print("Введите количество домов в диапазоне от 1 до 100: ");
+            while (!sc.hasNextInt()) {
+                System.out.println("Пожалуйста введите целое число");
+                sc.next();
+            }
+            numberCities = sc.nextInt();
+        } while (numberCities > 100 || numberCities <= 0);
 
-        int upcomingX, upcomingY;
+        City cities[] = new City[numberCities];
+        int upcomingX = 0, upcomingY = 0;
+
+
+        System.out.println("Ввод координат проводится в диапазоне от -2147483648 до 2147483647");
         for (int i = 0; i < numberCities; i++) {
-            System.out.print("Введите через пробел координаты x и y города под номером " + (i + 1) + ": ");
-            upcomingX = sc.nextInt();
-            upcomingY = sc.nextInt();
+
+            do{
+                System.out.print("Введите через пробел координаты x и y города под номером " + (i + 1) + ": ");
+
+                while(!sc.hasNext()){
+                    System.out.print("ОШИБКА! Неправильный формат данных. Введите повторно x: ");
+                    sc.next();
+                }
+                upcomingX = sc.nextInt();
+
+                while(!sc.hasNext()){
+                    System.out.print("ОШИБКА! Неправильный формат данных. Введите повторно y: ");
+                    sc.next();
+                }
+                upcomingY = sc.nextInt();
+
+            } while (!isValidCoordinates(upcomingX, upcomingY));
 
             City city = new City(upcomingX, upcomingY);
             if(isCityExist(city, cities)){
@@ -36,8 +60,17 @@ public class Reader {
             }
             cities[i] = city;
         }
+
         sc.close();
         return cities;
+    }
+
+    private boolean isValidCoordinates(int x, int y){
+        if(x >= -2147483648 && x <= 2147483647 && y >= -2147483648 && y <= 2147483647){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     /**
@@ -55,7 +88,7 @@ public class Reader {
                 }
             }
         }
-        return  false;
+        return false;
     }
 
     /**
