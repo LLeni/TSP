@@ -12,7 +12,7 @@ public class Evaluation {
 
     /**
      * Позволяет изменить оценку и местоположение где она проводилась
-     * @param valueEvaluation значение оценку
+     * @param valueEvaluation значение оценки
      * @param rowId строка местоположения
      * @param columnId столбец местоположения
      */

@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -9,12 +10,15 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class TestMatrixLengths {
-    private MatrixLengths matrixLengths;
 
     @Test
+    @ParameterizedTest
     @MethodSource("provideCities")
-    public void testCreateC(int id, City cities[], double result[][]){
+    public void testCreateC(int id, City cities[], int result){
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(500), () -> {
+
+           MatrixLengths matrixLengths = new MatrixLengths(MatrixLengths.createC(cities));
+           matrixLengths.showMatrix();
             Assertions.assertEquals(MatrixLengths.createC(cities), result, "Calculation on " + id + " case was incorrect");
         }, "It was timeout on " + id + " case");
     }
@@ -44,7 +48,12 @@ public class TestMatrixLengths {
                                 new City(4, 4),
 
                         },
-                        0)
+                        new double[][]{
+                                {
+                                    MatrixLengths.INFINITY,
+                                }
+                        }
+                        )
                 ,
                 Arguments.of(
                         3, new City[]{

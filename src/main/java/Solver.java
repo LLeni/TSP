@@ -33,8 +33,8 @@ public class Solver {
                 return C[0][1];
             }
         }
-        currentSolution = new Solution(new MatrixLengths(C));
 
+        currentSolution = new Solution(new MatrixLengths(C));
         currentSolution.getMatrixLengths().reduceLines();
         currentSolution.calculateLowBorder();
 
@@ -47,7 +47,6 @@ public class Solver {
                 currentSolution.getMatrixLengths().reduceLines();
             }
             divideCurrentSolution();
-            solutions.remove(idCurrentSolution); // Убираем текущую ветвь, т.к она ветвлилась
             idCurrentSolution = chooseSolution();
             currentSolution = solutions.get(idCurrentSolution);
         }
@@ -56,7 +55,7 @@ public class Solver {
 
 
     /**
-     * Делит текущее решение на два
+     * Делит текущее решение на два, проводя параллельно вычисления
      */
     private void divideCurrentSolution(){
 
@@ -81,6 +80,8 @@ public class Solver {
         solutionExclude.setLowBorder(solutionExclude.getLowBorder() + evaluation.getValueEvaluation());
         solutionExclude.setEliminatePath(true);
 
+
+        solutions.remove(idCurrentSolution); // Убираем текущую ветвь, т.к она ветвлилась
         solutions.add(solutionInclude);
         solutions.add(solutionExclude);
     }
