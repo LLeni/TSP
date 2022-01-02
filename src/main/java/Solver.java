@@ -75,14 +75,10 @@ public class Solver {
         solutionInclude.getMatrixLengths().reduceMatrix(evaluation.getRowId(), evaluation.getColumnId());
         solutionInclude.getMatrixLengths().reduceLines();
         solutionInclude.calculateLowBorder();
+        solutionInclude.setEliminatePath(false);
 
         //Вторая ветка, где мы исключаем путь
         solutionExclude.setLowBorder(solutionExclude.getLowBorder() + evaluation.getValueEvaluation());
-
-        solutionInclude.getMatrixLengths().showMatrix();
-        solutionExclude.getMatrixLengths().showMatrix();
-
-        solutionInclude.setEliminatePath(false);
         solutionExclude.setEliminatePath(true);
 
         solutions.add(solutionInclude);
