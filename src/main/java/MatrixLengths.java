@@ -110,8 +110,8 @@ public class MatrixLengths implements Cloneable {
 
     /**
      * Проводит редукцию матрицы
-     * @param r
-     * @param c
+     * @param r строка
+     * @param c столбец
      */
     public void reduceMatrix(int r, int c){
         excludePath(r, c);
@@ -227,7 +227,6 @@ public class MatrixLengths implements Cloneable {
                         evaluation.setEvaluation(currentMinRow + currentMinColumn, i, j);
                     }
                 }
-
             }
         }
         return evaluation;

@@ -81,7 +81,7 @@ public class Solver {
         solutionExclude.setEliminatePath(true);
 
 
-        solutions.remove(idCurrentSolution); // Убираем текущую ветвь, т.к она ветвлилась
+        solutions.remove(idCurrentSolution); // Убираем текущее решение, т.к оно породило остальные два
         solutions.add(solutionInclude);
         solutions.add(solutionExclude);
     }
