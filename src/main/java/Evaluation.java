@@ -1,29 +1,34 @@
 //Оценка
 //Содержит оценку и местоположение где она проводилась
 public class Evaluation {
-    private double valueEvaluation;
+    private double value;
     private int rowId;
     private int columnId;
 
     Evaluation(){
-        //Значение по умолчанию подразумевает под собой не найденную оценку
-        valueEvaluation = Double.MIN_VALUE;
+        this(Double.MIN_VALUE, -1, -1);
     }
 
-    /**
-     * Позволяет изменить оценку и местоположение где она проводилась
-     * @param valueEvaluation значение оценки
-     * @param rowId строка местоположения
-     * @param columnId столбец местоположения
-     */
-    public void setEvaluation(double valueEvaluation,int rowId, int columnId){
-        this.valueEvaluation = valueEvaluation;
+    Evaluation(double value,int rowId, int columnId){
+        this.value = value;
         this.rowId = rowId;
         this.columnId = columnId;
     }
 
-    public double getValueEvaluation() {
-        return valueEvaluation;
+    /**
+     * Позволяет изменить оценку и местоположение где она проводилась
+     * @param value значение оценки
+     * @param rowId строка местоположения
+     * @param columnId столбец местоположения
+     */
+    public void setFields(double value,int rowId, int columnId){
+        this.value = value;
+        this.rowId = rowId;
+        this.columnId = columnId;
+    }
+
+    public double getValue() {
+        return value;
     }
 
     public int getRowId() {

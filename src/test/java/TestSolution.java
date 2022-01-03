@@ -1,21 +1,18 @@
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
-public class TestMatrixLengths {
+public class TestSolution {
 
     @ParameterizedTest
     @MethodSource("provideCities")
     public void testCreateC(int id, City cities[], double expected[][]){
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(500), () -> {
-            double C[][] = MatrixLengths.createC(cities);
+            double C[][] = Solution.createC(cities);
             for (int i = 0; i < cities.length; i++) {
                 for (int j = 0; j < cities.length; j++) {
                     Assertions.assertEquals(expected[i][j], C[i][j], "Value on [" + i + ", " + j + "]  different from expected" );
@@ -32,9 +29,9 @@ public class TestMatrixLengths {
                               new City(5, 0),
                               new City(10, 0),
                         },new double[][]{
-                                {MatrixLengths.INFINITY, 5.0, 10.0},
-                                {5.0, MatrixLengths.INFINITY, 5.0},
-                                {10.0, 5.0, MatrixLengths.INFINITY}
+                                {Solution.INFINITY, 5.0, 10.0},
+                                {5.0, Solution.INFINITY, 5.0},
+                                {10.0, 5.0, Solution.INFINITY}
                         }),
                 Arguments.of(
                         1, new City[]{
@@ -42,9 +39,9 @@ public class TestMatrixLengths {
                             new City(12, 12),
                             new City(-10, -20),
                         }, new double[][]{
-                            {MatrixLengths.INFINITY, 18.439088914585774, 21.540659228538015},
-                            {18.439088914585774, MatrixLengths.INFINITY, 38.8329756778952},
-                            {21.540659228538015, 38.8329756778952, MatrixLengths.INFINITY},
+                            {Solution.INFINITY, 18.439088914585774, 21.540659228538015},
+                            {18.439088914585774, Solution.INFINITY, 38.8329756778952},
+                            {21.540659228538015, 38.8329756778952, Solution.INFINITY},
                         }),
                 Arguments.of(
                         2, new City[]{
@@ -55,11 +52,11 @@ public class TestMatrixLengths {
                             new City(4, 4),
 
                         },new double[][]{
-                            {MatrixLengths.INFINITY, 1.4142135623730951, 2.8284271247461903, 4.242640687119285, 5.656854249492381},
-                            {1.4142135623730951, MatrixLengths.INFINITY, 1.4142135623730951, 2.8284271247461903, 4.242640687119285},
-                            {2.8284271247461903, 1.4142135623730951, MatrixLengths.INFINITY, 1.4142135623730951, 2.8284271247461903},
-                            {4.242640687119285, 2.8284271247461903, 1.4142135623730951, MatrixLengths.INFINITY,1.4142135623730951},
-                            {5.656854249492381, 4.242640687119285, 2.8284271247461903, 1.4142135623730951, MatrixLengths.INFINITY}
+                            {Solution.INFINITY, 1.4142135623730951, 2.8284271247461903, 4.242640687119285, 5.656854249492381},
+                            {1.4142135623730951, Solution.INFINITY, 1.4142135623730951, 2.8284271247461903, 4.242640687119285},
+                            {2.8284271247461903, 1.4142135623730951, Solution.INFINITY, 1.4142135623730951, 2.8284271247461903},
+                            {4.242640687119285, 2.8284271247461903, 1.4142135623730951, Solution.INFINITY,1.4142135623730951},
+                            {5.656854249492381, 4.242640687119285, 2.8284271247461903, 1.4142135623730951, Solution.INFINITY}
                         }),
                 Arguments.of(
                         3, new City[]{
@@ -70,11 +67,11 @@ public class TestMatrixLengths {
                             new City(421, 493),
                         },
                         new double[][]{
-                            {MatrixLengths.INFINITY, 472.0010593208452, 27.65863337187866, 280.40149785619906, 613.6138851101725},
-                            {472.0010593208452, MatrixLengths.INFINITY, 478.81938139553205, 573.0619512757761, 490.5150354474366},
-                            {27.65863337187866, 478.81938139553205, MatrixLengths.INFINITY, 252.9584946191766, 596.560977604134},
-                            {280.40149785619906, 573.0619512757761, 252.9584946191766, MatrixLengths.INFINITY,456.1633479358025},
-                            {613.6138851101725, 490.5150354474366, 596.560977604134,456.1633479358025,MatrixLengths.INFINITY}
+                            {Solution.INFINITY, 472.0010593208452, 27.65863337187866, 280.40149785619906, 613.6138851101725},
+                            {472.0010593208452, Solution.INFINITY, 478.81938139553205, 573.0619512757761, 490.5150354474366},
+                            {27.65863337187866, 478.81938139553205, Solution.INFINITY, 252.9584946191766, 596.560977604134},
+                            {280.40149785619906, 573.0619512757761, 252.9584946191766, Solution.INFINITY,456.1633479358025},
+                            {613.6138851101725, 490.5150354474366, 596.560977604134,456.1633479358025,Solution.INFINITY}
                         })
         );
     }

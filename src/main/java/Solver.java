@@ -5,21 +5,20 @@ import java.util.ArrayList;
 public class Solver {
     private ArrayList<Solution> solutions; //ноды решений в дереве. Легче представлять в виде списка, т.к нас интересуют только листья
     private int idCurrentSolution;
-    private Solution currentSolution;
 
     /**
      * Расчитывает минимальный путь проходящий через все города и с возратом в первоначальный город
      * @param cities массив городов
-     * @return
+     * @return длину минимального пути
      */
     public double calculateMinLength(City cities[]){
-        return calculateMinLength(MatrixLengths.createC(cities));
+        return calculateMinLength(Solution.createC(cities));
     }
 
     /**
      * Расчитывает минимальный путь проходящий через все города и с возратом в первоначальный город
      * @param C матрица расстояний между городами
-     * @return
+     * @return длину минимального пути
      */
     public double calculateMinLength(double C[][]){
 
@@ -34,33 +33,34 @@ public class Solver {
             }
         }
 
-        currentSolution = new Solution(new MatrixLengths(C));
-        currentSolution.getMatrixLengths().reduceLines();
-        currentSolution.calculateLowBorder();
-
         solutions = new ArrayList<>();
-        solutions.add(currentSolution);
+        solutions.add(new Solution(C));
         idCurrentSolution = 0;
 
-        while(currentSolution.getMatrixLengths().getC().length > 1){
+        Solution currentSolution = solutions.get(idCurrentSolution);
+        currentSolution.reduceLines();
+        currentSolution.calculateLowBorder();
+
+        while(currentSolution.getC().length > 1){
             if(currentSolution.isEliminatePath()){
-                currentSolution.getMatrixLengths().reduceLines();
+                currentSolution.reduceLines();
             }
+            Evaluation evaluation = currentSolution.calculateMaxEvaluation();
+            currentSolution.changeCell(evaluation.getRowId(), evaluation.getColumnId(), Solution.INFINITY);
             divideCurrentSolution();
+            reworkLastSolutions(evaluation);
             idCurrentSolution = chooseSolution();
             currentSolution = solutions.get(idCurrentSolution);
         }
         return currentSolution.getLowBorder();
     }
 
-
     /**
-     * Делит текущее решение на два, проводя параллельно вычисления
+     * Делит текущее решение на два
      */
     private void divideCurrentSolution(){
 
-        Evaluation evaluation = currentSolution.getMatrixLengths().calculateMaxEvaluation();
-        currentSolution.getMatrixLengths().changeCell(evaluation.getRowId(), evaluation.getColumnId(), MatrixLengths.INFINITY);
+        Solution currentSolution = solutions.get(idCurrentSolution);
 
         Solution solutionInclude = null;
         Solution solutionExclude = null;
@@ -70,20 +70,29 @@ public class Solver {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        //Первая ветка, где мы включаем путь
-        solutionInclude.getMatrixLengths().reduceMatrix(evaluation.getRowId(), evaluation.getColumnId());
-        solutionInclude.getMatrixLengths().reduceLines();
-        solutionInclude.calculateLowBorder();
-        solutionInclude.setEliminatePath(false);
-
-        //Вторая ветка, где мы исключаем путь
-        solutionExclude.setLowBorder(solutionExclude.getLowBorder() + evaluation.getValueEvaluation());
-        solutionExclude.setEliminatePath(true);
-
 
         solutions.remove(idCurrentSolution); // Убираем текущее решение, т.к оно породило остальные два
         solutions.add(solutionInclude);
         solutions.add(solutionExclude);
+    }
+
+    /**
+     * Проводит изменения над последними двумя решениями
+     * @param evaluation
+     */
+    private void reworkLastSolutions(Evaluation evaluation){
+        Solution solutionInclude = solutions.get(solutions.size()-2);
+        Solution solutionExclude = solutions.get(solutions.size()-1);
+
+        //Первая ветка, где мы включаем путь
+        solutionInclude.reduceC(evaluation.getRowId(), evaluation.getColumnId());
+        solutionInclude.reduceLines();
+        solutionInclude.calculateLowBorder();
+        solutionInclude.setEliminatePath(false);
+
+        //Вторая ветка, где мы исключаем путь
+        solutionExclude.setLowBorder(solutionExclude.getLowBorder() + evaluation.getValue());
+        solutionExclude.setEliminatePath(true);
     }
 
 

@@ -5,10 +5,8 @@ import java.util.Scanner;
 // Реализует паттерн Singleton
 public class Reader {
     private Scanner sc;
-    private ClassLoader cl;
 
     private Reader(){
-        cl = this.getClass().getClassLoader();
     }
 
     /**
@@ -100,7 +98,7 @@ public class Reader {
     public City[] readFromFile(String path){
         ArrayList<City> cities = new ArrayList<>();
         int upcomingX, upcomingY;
-            sc = new Scanner(cl.getResourceAsStream(path));
+            sc = new Scanner(this.getClass().getClassLoader().getResourceAsStream(path));
             while(sc.hasNextLine()){
                 if(sc.hasNextInt()){
                     upcomingX = sc.nextInt();
