@@ -34,22 +34,19 @@ public class Reader {
         System.out.println("Ввод координат проводится в диапазоне от -2147483648 до 2147483647");
         for (int i = 0; i < numberCities; i++) {
 
-            do{
-                System.out.print("Введите через пробел координаты x и y города под номером " + (i + 1) + ": ");
+            System.out.print("Введите через пробел координаты x и y города под номером " + (i + 1) + ": ");
 
-                while(!sc.hasNext()){
-                    System.out.print("ОШИБКА! Неправильный формат данных. Введите повторно x: ");
-                    sc.next();
-                }
-                upcomingX = sc.nextInt();
+            while(!sc.hasNextInt()){
+                System.out.print("ОШИБКА! Неправильный формат данных. Введите повторно x: ");
+                sc.next();
+            }
+            upcomingX = sc.nextInt();
 
-                while(!sc.hasNext()){
-                    System.out.print("ОШИБКА! Неправильный формат данных. Введите повторно y: ");
-                    sc.next();
-                }
-                upcomingY = sc.nextInt();
-
-            } while (!isValidCoordinates(upcomingX, upcomingY));
+            while(!sc.hasNextInt()){
+                System.out.print("ОШИБКА! Неправильный формат данных. Введите повторно y: ");
+                sc.next();
+            }
+            upcomingY = sc.nextInt();
 
             City city = new City(upcomingX, upcomingY);
             if(isCityExist(city, cities)){
@@ -61,14 +58,6 @@ public class Reader {
 
         sc.close();
         return cities;
-    }
-
-    private boolean isValidCoordinates(int x, int y){
-        if(x >= -2147483648 && x <= 2147483647 && y >= -2147483648 && y <= 2147483647){
-            return true;
-        } else{
-            return false;
-        }
     }
 
     /**

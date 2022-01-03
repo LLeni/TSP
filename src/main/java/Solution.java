@@ -44,14 +44,14 @@ public class Solution implements Cloneable {
     }
 
     /**
-     * Проводит редуцию линий: как строк, так и столбцов и промежуточные расчеты в виде минимальных значений у каждого столбца и строки
+     * Проводит редукцию линий: как строк, так и столбцов и промежуточные расчеты в виде минимальных значений у каждого столбца и строки
      */
     public void reduceLines(){
         calculateMinsRow();
-        reduceRows(minsRow);
+        reduceRows();
 
         calculateMinsColumn();
-        reduceColumns(minsColumn);
+        reduceColumns();
     }
 
 
@@ -68,18 +68,16 @@ public class Solution implements Cloneable {
                 if(C[i][j] < currentMin)
                     currentMin = C[i][j];
             }
-            minsRow[i] = currentMin;
         }
     }
 
     /**
      * Проводит редукцию строк
-     * @param minsRow массив минимальных значений у каждой строки
      */
-    private void reduceRows(double minsRow[]){
+    private void reduceRows(){
         for (int i = 0; i < C.length; i++) {
             for (int j = 0; j < C.length; j++) {
-                if(i != j) //избегаем главную диагональ
+                if(C[i][j] != Solution.INFINITY) //избегаем главную диагональ
                     C[i][j] -= minsRow[i];
             }
         }
@@ -104,12 +102,11 @@ public class Solution implements Cloneable {
 
     /**
      * Проводит редукцию столбцов
-     * @param minsColumn массив минимальных значений у каждого столбца
      */
-    private void  reduceColumns(double minsColumn[]){
+    private void  reduceColumns(){
         for (int i = 0; i < C.length; i++) {
             for (int j = 0; j < C.length; j++) {
-                if(i != j) //избегаем главную диагональ
+                if(C[i][j] != Solution.INFINITY) //избегаем главную диагональ
                     C[i][j] -= minsColumn[j];
             }
         }
@@ -254,6 +251,7 @@ public class Solution implements Cloneable {
      * @param value значение
      */
     public void changeCell(int r, int c, double value){
+        System.out.println("r ");
         C[r][c] = value;
     }
 
