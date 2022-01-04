@@ -1,5 +1,5 @@
 //Оценка
-//Содержит оценку и местоположение где она проводилась
+//Содержит оценку и местоположение, где она проводилась
 public class Evaluation {
     private double value;
     private int rowId;

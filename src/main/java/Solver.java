@@ -40,7 +40,6 @@ public class Solver {
         Solution currentSolution = solutions.get(idCurrentSolution);
         currentSolution.reduceLines();
         currentSolution.calculateLowBorder();
-        System.out.println(currentSolution.getLowBorder());
         while(currentSolution.getC().length > 1){
             if(currentSolution.isEliminatePath()){
                 currentSolution.reduceLines();

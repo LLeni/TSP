@@ -251,7 +251,6 @@ public class Solution implements Cloneable {
      * @param value значение
      */
     public void changeCell(int r, int c, double value){
-        System.out.println("r ");
         C[r][c] = value;
     }
 

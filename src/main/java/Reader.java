@@ -5,6 +5,7 @@ import java.util.Scanner;
 // Реализует паттерн Singleton
 public class Reader {
     private Scanner sc;
+    private static Reader instance;
 
     private Reader(){
     }
@@ -21,7 +22,7 @@ public class Reader {
         do {
             System.out.print("Введите количество домов в диапазоне от 1 до 100: ");
             while (!sc.hasNextInt()) {
-                System.out.println("Пожалуйста введите целое число");
+                System.out.print("Пожалуйста введите целое число: ");
                 sc.next();
             }
             numberCities = sc.nextInt();
@@ -113,6 +114,9 @@ public class Reader {
      * @return экземпляр Reader
      */
     public  static Reader getInstance(){
-        return new Reader();
+        if(instance == null){
+            instance = new Reader();
+        }
+        return instance;
     }
 }

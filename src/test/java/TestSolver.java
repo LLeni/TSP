@@ -17,12 +17,8 @@ public class TestSolver {
     @ParameterizedTest
     @MethodSource("provideVariousSizes")
     public void testVariousSizes(int id, double C[][], double result){
-
-        System.out.println("id теста: " + id);
-        double r = solver.calculateMinLength(C);
-        System.out.println(r +  " - результат");
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
-            Assertions.assertEquals(result,r , "Calculation on " + id + " case was incorrect");
+            Assertions.assertEquals(result,solver.calculateMinLength(C) , "Calculation on " + id + " case was incorrect");
         }, "It was timeout on " + id + " case");
     }
 
@@ -85,14 +81,14 @@ public class TestSolver {
                         {12.4,12.2,Solution.INFINITY,92.3,23.1},
                         {11.123,21.2,11.6,Solution.INFINITY,56.1},
                         {5.43,5,5,23.1,Solution.INFINITY}
-                }, 40.63),
+                }, 40.629999999999995),
                 Arguments.of(3, new double[][] {
                         {Solution.INFINITY,209213.21,48212.31,39281.2,29391.12},
                         {39291.2,Solution.INFINITY,91012.1,29219.21,28281.23},
                         {12312.12,48121.23,Solution.INFINITY,19191.134,59122.1341},
                         {11,17,49381.24,Solution.INFINITY,81871.12},
                         {38482.131,49382.123,49472.412,48382.5919,Solution.INFINITY}
-                }, 129363.962)
+                }, 129363.96199999997)
         );
     }
 
