@@ -5,7 +5,7 @@
 # Установка
 Выберите один из релизов и скачайте его. Они находятся справа
 
-Для установки распакуйте архив в любую папку и при отсутствии JDK скачайте по следующей ссылке: https://www.oracle.com/ru/java/technologies/javase/javase8-archive-downloads.html (достаточно будет восьмой версии)
+Для установки распакуйте архив TSPSolver.rar в любую папку и при отсутствии JDK скачайте по следующей ссылке: https://www.oracle.com/ru/java/technologies/javase/javase8-archive-downloads.html (достаточно будет восьмой версии)
 
 # Запуск
 
